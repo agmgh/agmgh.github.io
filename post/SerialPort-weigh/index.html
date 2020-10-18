@@ -1,0 +1,287 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>.Net调用SerialPort类搞定电商包裹称重 | DotnetTalk</title>
+<link rel="shortcut icon" href="https://dotnettalk.top/favicon.ico?v=1602987756979">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://dotnettalk.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title=".Net调用SerialPort类搞定电商包裹称重 | DotnetTalk - Atom Feed" href="https://dotnettalk.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="目前，电商管理综合平台，基本上都包括包裹称重环节，特别是一些食品类电商，系统的包裹称重功能模块的设计，能够保证包裹重量不出错，能顺利检测出错异常包裹，减少包裹错发。
+
+包裹称重问题
+一般情况下，包裹称重功能在食品类电商ERP里出现。因为客户..." />
+    <meta name="keywords" content="电商系统开发" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://dotnettalk.top">
+  <img class="avatar" src="https://dotnettalk.top/images/avatar.png?v=1602987756979" alt="">
+  </a>
+  <h1 class="site-title">
+    DotnetTalk
+  </h1>
+  <p class="site-description">
+    Done is Better Than Perfact
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="https://curl.qcloud.com/sKNXUAKJ" class="menu" target="_blank">
+          11.11云上盛惠
+        </a>
+      
+    
+      
+        <a href="http://dotnettalk.ys168.com/" class="menu" target="_blank">
+          个人网盘
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://www.github.com/agmgh" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              .Net调用SerialPort类搞定电商包裹称重
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-12-29
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://dotnettalk.top/tag/uSZlUZKkX/" class="post-tag">
+                  # 电商系统开发
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>目前，电商管理综合平台，基本上都包括包裹称重环节，特别是一些食品类电商，系统的包裹称重功能模块的设计，能够保证包裹重量不出错，能顺利检测出错异常包裹，减少包裹错发。</p>
+<!-- more -->
+<h3 id="包裹称重问题">包裹称重问题</h3>
+<p>一般情况下，包裹称重功能在食品类电商ERP里出现。因为客户购买的多个产品，规格不同，就只能通过电子秤称重来确定产品重量，避免捡货错误。如果包裹称重环节设计没有达到要求，必然会出现错发漏发情况，进一步影响售后服务。</p>
+<h3 id="包裹称重设计">包裹称重设计</h3>
+<ol>
+<li>所有产品必须进行称重，产品属性里应该包括净重量和总重量，净重量为规格重量，如果40g的巴西松子，净重量为0.04kg，而总重量必然是大于净重量的，总重量是商品加上外包装袋的重量。</li>
+<li>对包裹纸箱进行称重，并登记记录每个规格的纸箱重量。纸箱也作为产品登记在系统的产品目录里。</li>
+<li>包裹重量检测： 系统计算重量 = 纸箱重量+产品重量，实际称重重量减去系统计算重量应该控制在一个可控范围内，主要是因为一些散称的产品，一般都会比实际重量多几克。</li>
+</ol>
+<h3 id="包裹称重界面设计">包裹称重界面设计</h3>
+<figure data-type="image" tabindex="1"><img src="https://dotnettalk.top/post-images/1582268469092.jpg" alt="包裹称重界面设计" loading="lazy"></figure>
+<p>包裹称重界面设计，数据项有称重人、物流单号、外箱条码、包裹重量、差重、标准重量、包含外箱总重量；称重界面打开后，将包裹放置电子秤，包裹重量自动显示，光标自动定位于物流单号文本框，扫描物流单号后，回车后，自动定位于外箱条码，输入实际外箱条码回车，系统自动计算差重、标准重量、包含外箱总重量。通过检查的包裹，将自动称重完成，并播放称重完成的声音提示。如果检查不通过，也同样会有声音提示。只要差重在我们设置的可控范围内，均能够顺利完成称重操作，如果差异较大，必然是捡货出现问题。</p>
+<h3 id="使用serialport实现读取com口获取重量">使用SerialPort实现读取COM口获取重量</h3>
+<h4 id="开始称重主方法代码">开始称重主方法代码</h4>
+<pre><code>private void beginWeight()
+{
+            try
+            {
+                timer1.Enabled = false;
+                serialPort1.Close(); //关闭COM口
+                GetSetComb();//设置Com口
+
+                interfaceUpdataHandle = new HandleInterfaceUpdataDelegate(UpdateTextBox);//实例化委托对象 
+                serialPort1.DataReceived += new SerialDataReceivedEventHandler(serialPort1_DataReceived); //接收COM口数据
+                if (!serialPort1.IsOpen)
+                {
+                    serialPort1.Open();
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+                return;
+            }
+            timer1.Enabled = true;
+}
+</code></pre>
+<h4 id="设置com口主要参数">设置COM口主要参数</h4>
+<pre><code> private void GetSetComb()
+ {
+            try
+            {
+                serialPort1.PortName = GlobalSettings.Instance.DefaultCom;
+                serialPort1.BaudRate = GlobalSettings.Instance.DefaultBaudRate;
+                serialPort1.Parity = (Parity)Enum.Parse(typeof(Parity), &quot;None&quot;);
+                serialPort1.StopBits = (StopBits)Enum.Parse(typeof(StopBits), &quot;1&quot;);
+                serialPort1.DataBits = 8;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+}
+</code></pre>
+<h4 id="datareceived-和在textbox实时显示重量的方法">DataReceived 和在TextBox实时显示重量的方法</h4>
+<pre><code>private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
+{
+            int i = serialPort1.BytesToRead;
+            if (i &gt; 0)
+            {
+                string strTemp = serialPort1.ReadLine();
+                this.Invoke(interfaceUpdataHandle, strTemp);
+            }
+        }
+
+        private void UpdateTextBox(string text)
+        {
+            string[] zl = null;
+            if (text.Length &gt; 0)
+            {
+                zl=text.Split(',');
+                if(zl.Length&gt;=2)
+                {
+                    txtbgzl.Text = zl[2].Replace(&quot;+&quot;,&quot;&quot;).Replace(&quot;kg&quot;,&quot;&quot;).Trim();
+                }
+            }            
+}
+</code></pre>
+<figure data-type="image" tabindex="2"><img src="https://dotnettalk.top/post-images/1582782296431.png" alt="关注公众号" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E5%8C%85%E8%A3%B9%E7%A7%B0%E9%87%8D%E9%97%AE%E9%A2%98">包裹称重问题</a></li>
+<li><a href="#%E5%8C%85%E8%A3%B9%E7%A7%B0%E9%87%8D%E8%AE%BE%E8%AE%A1">包裹称重设计</a></li>
+<li><a href="#%E5%8C%85%E8%A3%B9%E7%A7%B0%E9%87%8D%E7%95%8C%E9%9D%A2%E8%AE%BE%E8%AE%A1">包裹称重界面设计</a></li>
+<li><a href="#%E4%BD%BF%E7%94%A8serialport%E5%AE%9E%E7%8E%B0%E8%AF%BB%E5%8F%96com%E5%8F%A3%E8%8E%B7%E5%8F%96%E9%87%8D%E9%87%8F">使用SerialPort实现读取COM口获取重量</a>
+<ul>
+<li><a href="#%E5%BC%80%E5%A7%8B%E7%A7%B0%E9%87%8D%E4%B8%BB%E6%96%B9%E6%B3%95%E4%BB%A3%E7%A0%81">开始称重主方法代码</a></li>
+<li><a href="#%E8%AE%BE%E7%BD%AEcom%E5%8F%A3%E4%B8%BB%E8%A6%81%E5%8F%82%E6%95%B0">设置COM口主要参数</a></li>
+<li><a href="#datareceived-%E5%92%8C%E5%9C%A8textbox%E5%AE%9E%E6%97%B6%E6%98%BE%E7%A4%BA%E9%87%8D%E9%87%8F%E7%9A%84%E6%96%B9%E6%B3%95">DataReceived 和在TextBox实时显示重量的方法</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://dotnettalk.top/post/autoUpdate-dotnet/">
+              <h3 class="post-title">
+                .Net实现客户端自动升级组件autoupdate
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34188102000330" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="https://dotnettalk.top/images/ba.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 10px; color:#939393;">皖公网安备 34188102000330号</p></a>
+  <a class="rss" href="https://dotnettalk.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

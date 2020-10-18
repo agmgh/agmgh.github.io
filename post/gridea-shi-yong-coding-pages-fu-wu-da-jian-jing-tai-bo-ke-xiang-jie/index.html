@@ -1,0 +1,222 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Gridea使用Coding Pages服务搭建静态博客详解 | DotnetTalk</title>
+<link rel="shortcut icon" href="https://dotnettalk.top/favicon.ico?v=1602987756979">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://dotnettalk.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="Gridea使用Coding Pages服务搭建静态博客详解 | DotnetTalk - Atom Feed" href="https://dotnettalk.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="今天为大家带来使用Gridea搭建静态博客中CodingPages服务的配置教程，一步一步介绍如何配置CodingPages 服务。
+
+关于Gridea
+Gridea 是一个静态博客写作客户端，帮助你更容易地构建并管理博客或任何静态站点。最..." />
+    <meta name="keywords" content="" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://dotnettalk.top">
+  <img class="avatar" src="https://dotnettalk.top/images/avatar.png?v=1602987756979" alt="">
+  </a>
+  <h1 class="site-title">
+    DotnetTalk
+  </h1>
+  <p class="site-description">
+    Done is Better Than Perfact
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="https://curl.qcloud.com/sKNXUAKJ" class="menu" target="_blank">
+          11.11云上盛惠
+        </a>
+      
+    
+      
+        <a href="http://dotnettalk.ys168.com/" class="menu" target="_blank">
+          个人网盘
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://www.github.com/agmgh" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              Gridea使用Coding Pages服务搭建静态博客详解
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-02-26
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>今天为大家带来使用Gridea搭建静态博客中CodingPages服务的配置教程，一步一步介绍如何配置CodingPages 服务。</p>
+<!-- more -->
+<h2 id="关于gridea">关于Gridea</h2>
+<p>Gridea 是一个静态博客写作客户端，帮助你更容易地构建并管理博客或任何静态站点。最新版本v0.9.2已经集成Git功能，不需要本机安装Git就可以同步博客数据了。<br>
+<img src="https://dotnettalk.top/post-images/1582701102805.jpg" alt="Gridea设置页面" loading="lazy"></p>
+<p>上图是Gridea设置页面，站点的源文件路径是C:/Users/Administrator/Documents/Gridea，这个可以自定义。如果你使用坚果云、百度网盘、微云等网盘工具，你完全可以将此路径更改到网盘同步目录，这样就可以多个电脑同步使用了。</p>
+<h2 id="coding-pages服务配置">Coding Pages服务配置</h2>
+<p>打开Coding.net或者腾讯云开发者平台，登陆coding个人版后台<br>
+<img src="https://dotnettalk.top/post-images/1582701167736.png" alt="新版Coding后台页面" loading="lazy"></p>
+<p>经过测试，发现新版的Coding里新建的仓库项目无法启用page功能，但是，我们可以点击上面默认的项目 冒泡/私信数据备份项目，开启静态网站功能：</p>
+<figure data-type="image" tabindex="1"><img src="https://dotnettalk.top/post-images/1582701336958.png" alt="开启静态网站" loading="lazy"></figure>
+<p>创建访问令牌，路径是 右上角个人图像--&gt;个人设置--&gt;访问令牌<br>
+<img src="https://dotnettalk.top/post-images/1582701361335.png" alt="访问令牌" loading="lazy"></p>
+<p>只要勾选第一项：project:depo 读/写 完整的仓库控制权限，点击创建令牌即可。跳转得到如下信息：</p>
+<p>令牌用户名和密钥，这些信息拷贝到Gridea的配置里。<br>
+<img src="https://dotnettalk.top/post-images/1582701451172.jpg" alt="Gridea远程基础配置" loading="lazy"></p>
+<p>点击同步按钮，即可完成博客同步操作，同步后的默认网站界面如下：<br>
+<img src="https://dotnettalk.top/post-images/1582701472405.png" alt="默认网站截图" loading="lazy"></p>
+<h2 id="详细解析coding配置信息">详细解析Coding配置信息：</h2>
+<ul>
+<li>域 名： 可以是自定义的域名，也可以是page分配的随机域名；</li>
+<li>仓库名称： 开启静态网站功能中，部署来源选择项目的名称就是仓库名称；</li>
+<li>分支：默认为 master</li>
+<li>仓库用户名：默认为coding个人设置里的登录名</li>
+<li>邮 箱： 默认为coding个人设置里邮件地址</li>
+<li>令牌用户名 和令牌是在创建访问令牌时得到的。</li>
+<li>CNAME： 如果有域名，可以设置为自己的域名，需要在coding的静态网站设置中开启，同时，需要进行域名解析。</li>
+</ul>
+<p>上面就是Gridea使用Coding Pages服务搭建静态博客的全部内容，希望对你搭建自己博客有帮助。<br>
+<img src="https://dotnettalk.top/post-images/1582782296431.png" alt="关注公众号" loading="lazy"></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li><a href="#%E5%85%B3%E4%BA%8Egridea">关于Gridea</a></li>
+<li><a href="#coding-pages%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE">Coding Pages服务配置</a></li>
+<li><a href="#%E8%AF%A6%E7%BB%86%E8%A7%A3%E6%9E%90coding%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF">详细解析Coding配置信息：</a></li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://dotnettalk.top/post/topsdk-get-services-api/">
+              <h3 class="post-title">
+                关于商家后台系统对接淘宝API问题汇总
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34188102000330" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="https://dotnettalk.top/images/ba.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 10px; color:#939393;">皖公网安备 34188102000330号</p></a>
+  <a class="rss" href="https://dotnettalk.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

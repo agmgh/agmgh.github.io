@@ -1,0 +1,367 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>.Net实现客户端自动升级组件autoupdate | DotnetTalk</title>
+<link rel="shortcut icon" href="https://dotnettalk.top/favicon.ico?v=1602987756979">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://dotnettalk.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title=".Net实现客户端自动升级组件autoupdate | DotnetTalk - Atom Feed" href="https://dotnettalk.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="目前，我们自己开发的电商管理综合平台，在项目刚刚上线的时候，因为我们引用的第三方控件较多，就没有制作专门安装包，而是直接将发布的程序，拷贝到目标机器，直接运行的，因为采用的.NET语言开发，只要目标机器安装了.NET 框架即可。可在程序发布..." />
+    <meta name="keywords" content="电商系统开发" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://dotnettalk.top">
+  <img class="avatar" src="https://dotnettalk.top/images/avatar.png?v=1602987756979" alt="">
+  </a>
+  <h1 class="site-title">
+    DotnetTalk
+  </h1>
+  <p class="site-description">
+    Done is Better Than Perfact
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="https://curl.qcloud.com/sKNXUAKJ" class="menu" target="_blank">
+          11.11云上盛惠
+        </a>
+      
+    
+      
+        <a href="http://dotnettalk.ys168.com/" class="menu" target="_blank">
+          个人网盘
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://www.github.com/agmgh" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              .Net实现客户端自动升级组件autoupdate
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-12-26
+              </span>
+              <span>
+                6 min read
+              </span>
+              
+                <a href="https://dotnettalk.top/tag/uSZlUZKkX/" class="post-tag">
+                  # 电商系统开发
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>目前，我们自己开发的电商管理综合平台，在项目刚刚上线的时候，因为我们引用的第三方控件较多，就没有制作专门安装包，而是直接将发布的程序，拷贝到目标机器，直接运行的，因为采用的.NET语言开发，只要目标机器安装了.NET 框架即可。可在程序发布的初期，当我们部署了大概30台客户端后，发现每次修改后的程序，都要拷贝至目标机器运行时，增加了我们的工作量，也给电商部门使用软件带来了不便。为了解决重复繁琐的升级过程，我们给电商综合管理平台新增了自动升级组件。</p>
+<!-- more -->
+<h3 id="自动升级组件开发步骤">自动升级组件开发步骤</h3>
+<ol>
+<li>将要升级的文件发布到WebP站点或者FTP站点；</li>
+<li>将一份包含升级文件配置的xml文件分别放置于web站点和本地客户端目录中，未更新时，两端的xml文件应相同。</li>
+<li>发布程序时，为保证能够方便管理，将程序(程序集)的版本号和文件版本号设置为相同的即可。每次升级时，均需要修改版本号。</li>
+<li>通过本地客户端登陆时，将本地的升级xml文件和Web站点的XML进行比对，如果有变化，则直接下载需要更新的程序，完成升级即可。</li>
+</ol>
+<h3 id="web站点-文件服务部署">Web站点-文件服务部署</h3>
+<p>因为我们的程序是运行在公司内网的，所以，我们选择了直接将发布的升级文件部署为一个web站点，设置匿名访问权限，部署网站完成后，通过内网地址可以访问文件，即说明部署正确。</p>
+<h3 id="开发自动升级组件">开发自动升级组件</h3>
+<h4 id="客户端组件前端界面设计">客户端组件前端界面设计</h4>
+<p>在winform窗体里，我们拖放一个listView列表和一个下载文件的进度条，就可以完成一个简单的升级界面设计了，再此不在详细描述，具体设计界面如下：<br>
+<img src="https://dotnettalk.top/post-images/1582268414262.jpg" alt="自动升级界面" loading="lazy"></p>
+<h4 id="后台关键代码编写">后台关键代码编写</h4>
+<p>#####下载文件</p>
+<pre><code>private void DownUpdateFile()
+{
+            this.Cursor = Cursors.WaitCursor;
+            mainAppExe = updaterXmlFiles.GetNodeValue(&quot;//EntryPoint&quot;);
+            Process[] allProcess = Process.GetProcesses();
+            foreach (Process p in allProcess)
+            {
+                if (p.ProcessName.ToLower() + &quot;.exe&quot; == mainAppExe.ToLower())
+                {
+                    for (int i = 0; i &lt; p.Threads.Count; i++)
+                        p.Threads[i].Dispose();
+                    p.Kill();
+                    isRun = true;
+                    //break;
+                }
+            }
+            WebClient wcClient = new WebClient();
+            for (int i = 0; i &lt; this.lvUpdateList.Items.Count; i++)
+            {
+                string UpdateFile = lvUpdateList.Items[i].Text.Trim();
+                string updateFileUrl = updateUrl + lvUpdateList.Items[i].Text.Trim();
+                long fileLength = 0;
+                WebRequest webReq = WebRequest.Create(updateFileUrl);
+                WebResponse webRes = webReq.GetResponse();
+                fileLength = webRes.ContentLength;
+                lbState.Text = &quot;正在下载更新文件,请稍后...&quot;;
+                pbDownFile.Value = 0;
+                pbDownFile.Maximum = (int)fileLength;
+                try
+                {
+                    Stream srm = webRes.GetResponseStream();
+                    StreamReader srmReader = new StreamReader(srm);
+                    byte[] bufferbyte = new byte[fileLength];
+                    int allByte = (int)bufferbyte.Length;
+                    int startByte = 0;
+                    while (fileLength &gt; 0)
+                    {
+                        Application.DoEvents();
+                        int downByte = srm.Read(bufferbyte, startByte, allByte);
+                        if (downByte == 0) { break; };
+                        startByte += downByte;
+                        allByte -= downByte;
+                        pbDownFile.Value += downByte;
+                        float part = (float)startByte / 1024;
+                        float total = (float)bufferbyte.Length / 1024;
+                        int percent = Convert.ToInt32((part / total) * 100);
+                        this.lvUpdateList.Items[i].SubItems[2].Text = percent.ToString() + &quot;%&quot;;
+                    }
+                    string tempPath = tempUpdatePath + UpdateFile;
+                    CreateDirtory(tempPath);
+                    FileStream fs = new FileStream(tempPath, FileMode.OpenOrCreate, FileAccess.Write);
+                    fs.Write(bufferbyte, 0, bufferbyte.Length);
+                    srm.Close();
+                    srmReader.Close();
+                    fs.Close();
+                }
+                catch (WebException ex)
+                {
+                    MessageBox.Show(&quot;更新文件下载失败！&quot; + ex.Message.ToString(), &quot;错误&quot;, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            InvalidateControl();
+            this.Cursor = Cursors.Default;
+ }
+</code></pre>
+<h5 id="界面初始化">界面初始化</h5>
+<pre><code>private void FrmUpdate_Load(object sender, EventArgs e)
+{
+            btnFinish.Visible = false;
+            string localXmlFile = Application.StartupPath + &quot;\\UpdateList.xml&quot;;
+            string serverXmlFile = string.Empty;
+            try
+            {
+                //从本地读取更新配置文件信息
+                updaterXmlFiles = new XmlFiles(localXmlFile);
+            }
+            catch
+            {
+                MessageBox.Show(&quot;配置文件出错!&quot;, &quot;错误&quot;, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.Close();
+                return;
+            }
+            //获取服务器地址
+            updateUrl = updaterXmlFiles.GetNodeValue(&quot;//Url&quot;);
+            AppUpdater appUpdater = new AppUpdater();
+            appUpdater.UpdaterUrl = updateUrl + &quot;/UpdateList.xml&quot;;
+            //与服务器连接,下载更新配置文件
+            try
+            {
+                tempUpdatePath = Environment.GetEnvironmentVariable(&quot;Temp&quot;) + &quot;\\&quot; + &quot;_&quot; + updaterXmlFiles.FindNode(&quot;//Application&quot;).Attributes[&quot;applicationId&quot;].Value + &quot;_&quot; + &quot;y&quot; + &quot;_&quot; + &quot;x&quot; + &quot;_&quot; + &quot;m&quot; + &quot;_&quot; + &quot;\\&quot;;
+                appUpdater.DownAutoUpdateFile(tempUpdatePath);
+            }
+            catch
+            {
+                MessageBox.Show(&quot;与服务器连接失败,操作超时!&quot;, &quot;提示&quot;, MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.Close();
+                return;
+            }
+            //获取更新文件列表
+            Hashtable htUpdateFile = new Hashtable();
+            serverXmlFile = tempUpdatePath + &quot;\\UpdateList.xml&quot;;
+            if (!File.Exists(serverXmlFile))
+            {
+                return;
+            }
+            availableUpdate = appUpdater.CheckForUpdate(serverXmlFile, localXmlFile, out htUpdateFile);
+            if (availableUpdate &gt; 0)
+            {
+                for (int i = 0; i &lt; htUpdateFile.Count; i++)
+                {
+                    string[] fileArray = (string[])htUpdateFile[i];
+                    lvUpdateList.Items.Add(new ListViewItem(fileArray));
+                }
+            }
+}
+</code></pre>
+<p>#####下一步按钮事件</p>
+<pre><code>private void btnNext_Click(object sender, EventArgs e)
+{
+      if (availableUpdate &gt; 0)
+      {
+               Thread threadDown = new Thread(new ThreadStart(DownUpdateFile));
+               threadDown.IsBackground = true;
+               threadDown.Start();
+      }
+      else
+      {
+               MessageBox.Show(&quot;没有可用的更新!&quot;, &quot;自动更新&quot;, MessageBoxButtons.OK, MessageBoxIcon.Information);
+               return;
+      }
+}
+</code></pre>
+<h3 id="updatelistxml">UpdateList.xml</h3>
+<p>代码里需要用到的更新文件模板如下：<br>
+<img src="https://dotnettalk.top/post-images/1582268645668.jpg" alt="UpdateList" loading="lazy"></p>
+<p>红色标记的Url 就是更新文件所在的web站点地址。<br>
+自动更新组件效果图<br>
+<img src="https://dotnettalk.top/post-images/1582268661772.jpg" alt="自动升级" loading="lazy"></p>
+<p>当系统登陆时，自动检查，发现升级文件后，运行自动升级组件，如上图所示，直接点击下一步，下载文件，即可完成程序文件升级操作。</p>
+<h3 id="特别说明">特别说明</h3>
+<p>此次分享的自动升级组件，是目前最简单的一种客户端升级方案，对于内网使用的软件，此方案可以满足要求，如果客户端是网络版的，则需要考虑更多安全方面的因素。比如，为了增加升级服务的安全性，自动升级的URL地址可加密存储在本地，将需要升级的文件压缩加密存放于FTP服务器，通过FTP服务下载文件，使用密码解压文件。<br>
+<img src="https://dotnettalk.top/post-images/1582782296431.png" alt="关注公众号" loading="lazy"></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E8%87%AA%E5%8A%A8%E5%8D%87%E7%BA%A7%E7%BB%84%E4%BB%B6%E5%BC%80%E5%8F%91%E6%AD%A5%E9%AA%A4">自动升级组件开发步骤</a></li>
+<li><a href="#web%E7%AB%99%E7%82%B9-%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E9%83%A8%E7%BD%B2">Web站点-文件服务部署</a></li>
+<li><a href="#%E5%BC%80%E5%8F%91%E8%87%AA%E5%8A%A8%E5%8D%87%E7%BA%A7%E7%BB%84%E4%BB%B6">开发自动升级组件</a>
+<ul>
+<li><a href="#%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%BB%84%E4%BB%B6%E5%89%8D%E7%AB%AF%E7%95%8C%E9%9D%A2%E8%AE%BE%E8%AE%A1">客户端组件前端界面设计</a></li>
+<li><a href="#%E5%90%8E%E5%8F%B0%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81%E7%BC%96%E5%86%99">后台关键代码编写</a>
+<ul>
+<li><a href="#%E7%95%8C%E9%9D%A2%E5%88%9D%E5%A7%8B%E5%8C%96">界面初始化</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#updatelistxml">UpdateList.xml</a></li>
+<li><a href="#%E7%89%B9%E5%88%AB%E8%AF%B4%E6%98%8E">特别说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://dotnettalk.top/post/api-class/">
+              <h3 class="post-title">
+                API调用类编写
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34188102000330" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="https://dotnettalk.top/images/ba.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 10px; color:#939393;">皖公网安备 34188102000330号</p></a>
+  <a class="rss" href="https://dotnettalk.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

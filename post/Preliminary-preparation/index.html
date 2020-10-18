@@ -1,0 +1,220 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>前期准备 | DotnetTalk</title>
+<link rel="shortcut icon" href="https://dotnettalk.top/favicon.ico?v=1602987756979">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://dotnettalk.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="前期准备 | DotnetTalk - Atom Feed" href="https://dotnettalk.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="对于有软件研发能力的商家，目前主流的电商平台的开放平台，均提供 API 接口供开发人员调用，可以方便的处理订单、自动发货、同步库存等操作。下面以入驻天猫聚石塔为列，介绍商家后台管理系统开发的前期准备工作。
+
+创建应用
+点击聚石塔，点击左上角..." />
+    <meta name="keywords" content="电商系统开发" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://dotnettalk.top">
+  <img class="avatar" src="https://dotnettalk.top/images/avatar.png?v=1602987756979" alt="">
+  </a>
+  <h1 class="site-title">
+    DotnetTalk
+  </h1>
+  <p class="site-description">
+    Done is Better Than Perfact
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="https://curl.qcloud.com/sKNXUAKJ" class="menu" target="_blank">
+          11.11云上盛惠
+        </a>
+      
+    
+      
+        <a href="http://dotnettalk.ys168.com/" class="menu" target="_blank">
+          个人网盘
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://www.github.com/agmgh" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              前期准备
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-12-12
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+                <a href="https://dotnettalk.top/tag/uSZlUZKkX/" class="post-tag">
+                  # 电商系统开发
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>对于有软件研发能力的商家，目前主流的电商平台的开放平台，均提供 API 接口供开发人员调用，可以方便的处理订单、自动发货、同步库存等操作。下面以入驻天猫聚石塔为列，介绍商家后台管理系统开发的前期准备工作。</p>
+<!-- more -->
+<h3 id="创建应用">创建应用</h3>
+<p>点击<a href="https://cloud.tmall.com/" title="聚石塔">聚石塔</a>，点击左上角的登录链接，页面跳转至登录页，输入天猫商家主账号和密码，点击登陆按钮，返回聚石塔主站，如下图。<br>
+<img src="https://dotnettalk.top/post-images/1582267883659.png" alt="聚石塔" loading="lazy"></p>
+<p>点击控制台链接，进入聚石塔的控制台主页，如下图：<br>
+<img src="https://dotnettalk.top/post-images/1582267927563.png" alt="聚石塔主界面" loading="lazy"></p>
+<p>点击应用管理，进入应用管理主页，如下图：<br>
+<img src="https://dotnettalk.top/post-images/1582267938544.png" alt="创建应用" loading="lazy"><br>
+点击 ➕ 号，创建应用。</p>
+<p>选择应用类型为 电商后台 ，如下图：<br>
+<img src="https://dotnettalk.top/post-images/1582267959820.png" alt="" loading="lazy"></p>
+<p>选择应用类型为 我是天猫/集市商家，点击创建应用，如下图：<br>
+<img src="https://dotnettalk.top/post-images/1582267992323.png" alt="选择我是天猫集市商家" loading="lazy"></p>
+<p>选择应用类型为 商家后台系统，点击申请申请，跳转页面到填写应用信息和开发者信息页面，填写相关信息，完成应用创建。<br>
+<img src="https://dotnettalk.top/post-images/1582268021332.png" alt="商家后台系统申请" loading="lazy"></p>
+<p>点击应用管理，进入应用 APP 证书，如下图：<br>
+<img src="https://dotnettalk.top/post-images/1582268031908.png" alt="申请完成后的应用列表" loading="lazy"></p>
+<p>点击上图的应用管理，可以查询到 App Key 和 App Secret。这两个 APP 参数对于 API 对接，是最重要的两个参数。<br>
+<img src="https://dotnettalk.top/post-images/1582268044423.png" alt="应用APP证书" loading="lazy"></p>
+<p>点击 SDK 下载，可以下载对应版本的 SDK，来完成 API 接口的快速调用和接入。如下图：<br>
+<img src="https://dotnettalk.top/post-images/1582268058609.png" alt="下载SDK" loading="lazy"></p>
+<p>点击安全中心下的 IP 白名单设置，填入经你允许的 IP 地址，为方便调试，可以添加你本地的 IP。如下图：<br>
+<img src="https://dotnettalk.top/post-images/1582268070469.png" alt="IP白名单设置" loading="lazy"></p>
+<h3 id="注意事项">注意事项</h3>
+<ol>
+<li>提供的产品说明书 聚石塔官方提供产品说明书模板，按要求填写即可；</li>
+<li>需提供商家自研软件的著作权证书，关键是第二点，现在审核商家自研应用非常严格，必须提供软件著作权证书，才能通过应用的审核。<br>
+<img src="https://dotnettalk.top/post-images/1582782296431.png" alt="关注公众号" loading="lazy"></li>
+</ol>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E5%88%9B%E5%BB%BA%E5%BA%94%E7%94%A8">创建应用</a></li>
+<li><a href="#%E6%B3%A8%E6%84%8F%E4%BA%8B%E9%A1%B9">注意事项</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+
+        
+
+        <div class="site-footer">
+  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34188102000330" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="https://dotnettalk.top/images/ba.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 10px; color:#939393;">皖公网安备 34188102000330号</p></a>
+  <a class="rss" href="https://dotnettalk.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

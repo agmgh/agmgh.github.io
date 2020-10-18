@@ -1,0 +1,228 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>关于商家后台系统对接淘宝API问题汇总 | DotnetTalk</title>
+<link rel="shortcut icon" href="https://dotnettalk.top/favicon.ico?v=1602987756979">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://dotnettalk.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="关于商家后台系统对接淘宝API问题汇总 | DotnetTalk - Atom Feed" href="https://dotnettalk.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="最近，经常会遇到很多朋友咨询关于淘宝的订单对接问题，也有一些软件开发的朋友，希望可以在现有系统里集成淘宝API接口，实现淘宝订单处理工作。今天正好有时间，特别写一篇关于这类问题的汇总文章，希望可以帮助到有这方面需求的朋友。
+
+我有淘宝店铺没..." />
+    <meta name="keywords" content="电商系统开发" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://dotnettalk.top">
+  <img class="avatar" src="https://dotnettalk.top/images/avatar.png?v=1602987756979" alt="">
+  </a>
+  <h1 class="site-title">
+    DotnetTalk
+  </h1>
+  <p class="site-description">
+    Done is Better Than Perfact
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="https://curl.qcloud.com/sKNXUAKJ" class="menu" target="_blank">
+          11.11云上盛惠
+        </a>
+      
+    
+      
+        <a href="http://dotnettalk.ys168.com/" class="menu" target="_blank">
+          个人网盘
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://www.github.com/agmgh" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              关于商家后台系统对接淘宝API问题汇总
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-01-15
+              </span>
+              <span>
+                2 min read
+              </span>
+              
+                <a href="https://dotnettalk.top/tag/uSZlUZKkX/" class="post-tag">
+                  # 电商系统开发
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>最近，经常会遇到很多朋友咨询关于淘宝的订单对接问题，也有一些软件开发的朋友，希望可以在现有系统里集成淘宝API接口，实现淘宝订单处理工作。今天正好有时间，特别写一篇关于这类问题的汇总文章，希望可以帮助到有这方面需求的朋友。</p>
+<!-- more -->
+<h3 id="我有淘宝店铺没有天猫店铺是否可以对接淘宝api">我有淘宝店铺没有天猫店铺，是否可以对接淘宝API？</h3>
+<p>在最新的商家后台系统对接规则里，已经明确说明：</p>
+<p>若您为淘宝集市卖家，抱歉无法为您开启商家接入流程，请您到卖家服务市场挑选您需要的工具/系统。</p>
+<h3 id="商家后台系统对接有哪些接入标准">商家后台系统对接有哪些接入标准？</h3>
+<blockquote>
+<ol>
+<li>必须为公司身份（支付宝账号为公司认证）；</li>
+<li>仅限于具有开发能力的天猫商家；</li>
+<li>商家接入只能供自己店铺所用（自己店铺包括自己的一家或多家店铺）；</li>
+<li>申请商家接入必须入驻聚石塔；</li>
+<li>申请入驻需要在产品说明书中提供自研发系统详细功能模块信息（调用API信息，系统架构，功能截图，自研发软件著作权，自研发源代码）。</li>
+</ol>
+</blockquote>
+<h3 id="调用淘宝api订单是否必须要入聚石塔">调用淘宝API订单，是否必须要入聚石塔？</h3>
+<p>是的，如果你在塔外调用API接口，获取的订单的地址、收货人等关键信息将会被模糊，导致订单数据下载后，无法正常使用。</p>
+<p>一般，入聚石塔后，最好开通订单同步服务，将订单数据、商品数据、退款数据定时推送到同步库，这样，也不会出现调用淘宝API时，出现漏单情况了。</p>
+<h3 id="选择什么样的技术方案可以更快对接企业erp系统">选择什么样的技术方案，可以更快对接企业ERP系统?</h3>
+<p>企业ERP系统对接淘宝API的主要目标是：</p>
+<ul>
+<li>获取淘宝店铺订单</li>
+<li>调用淘宝API发货接口，实现自动发货</li>
+<li>对接菜鸟电子面单</li>
+<li>调用库存同步API，实现线下库存与线上库存同步。</li>
+<li>要满足以上目标，完全可以通过在塔内部署订单下载的web服务，完成上述目标。<br>
+<img src="https://dotnettalk.top/post-images/1582782296431.png" alt="关注公众号" loading="lazy"></li>
+</ul>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E6%88%91%E6%9C%89%E6%B7%98%E5%AE%9D%E5%BA%97%E9%93%BA%E6%B2%A1%E6%9C%89%E5%A4%A9%E7%8C%AB%E5%BA%97%E9%93%BA%E6%98%AF%E5%90%A6%E5%8F%AF%E4%BB%A5%E5%AF%B9%E6%8E%A5%E6%B7%98%E5%AE%9Dapi">我有淘宝店铺没有天猫店铺，是否可以对接淘宝API？</a></li>
+<li><a href="#%E5%95%86%E5%AE%B6%E5%90%8E%E5%8F%B0%E7%B3%BB%E7%BB%9F%E5%AF%B9%E6%8E%A5%E6%9C%89%E5%93%AA%E4%BA%9B%E6%8E%A5%E5%85%A5%E6%A0%87%E5%87%86">商家后台系统对接有哪些接入标准？</a></li>
+<li><a href="#%E8%B0%83%E7%94%A8%E6%B7%98%E5%AE%9Dapi%E8%AE%A2%E5%8D%95%E6%98%AF%E5%90%A6%E5%BF%85%E9%A1%BB%E8%A6%81%E5%85%A5%E8%81%9A%E7%9F%B3%E5%A1%94">调用淘宝API订单，是否必须要入聚石塔？</a></li>
+<li><a href="#%E9%80%89%E6%8B%A9%E4%BB%80%E4%B9%88%E6%A0%B7%E7%9A%84%E6%8A%80%E6%9C%AF%E6%96%B9%E6%A1%88%E5%8F%AF%E4%BB%A5%E6%9B%B4%E5%BF%AB%E5%AF%B9%E6%8E%A5%E4%BC%81%E4%B8%9Aerp%E7%B3%BB%E7%BB%9F">选择什么样的技术方案，可以更快对接企业ERP系统?</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://dotnettalk.top/post/TransactionScope/">
+              <h3 class="post-title">
+                C#中TransactionScope的使用方法和原理(转)
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34188102000330" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="https://dotnettalk.top/images/ba.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 10px; color:#939393;">皖公网安备 34188102000330号</p></a>
+  <a class="rss" href="https://dotnettalk.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

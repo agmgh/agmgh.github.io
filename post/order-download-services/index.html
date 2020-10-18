@@ -1,0 +1,274 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>订单下载服务自动化设计 | DotnetTalk</title>
+<link rel="shortcut icon" href="https://dotnettalk.top/favicon.ico?v=1602987756979">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://dotnettalk.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="订单下载服务自动化设计 | DotnetTalk - Atom Feed" href="https://dotnettalk.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="电商管理综合平台订单下载服务
+我们开发的电商管理综合平台，分为电商ERP客户端和后台订单下载服务两个部分，其中订单下载服务是将一个自动化的服务，统一下载各平台的订单到电商业务库，交由电商ERP客户端处理。
+哪些任务可以设置为自动任务
+目前，..." />
+    <meta name="keywords" content="电商系统开发" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://dotnettalk.top">
+  <img class="avatar" src="https://dotnettalk.top/images/avatar.png?v=1602987756979" alt="">
+  </a>
+  <h1 class="site-title">
+    DotnetTalk
+  </h1>
+  <p class="site-description">
+    Done is Better Than Perfact
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="https://curl.qcloud.com/sKNXUAKJ" class="menu" target="_blank">
+          11.11云上盛惠
+        </a>
+      
+    
+      
+        <a href="http://dotnettalk.ys168.com/" class="menu" target="_blank">
+          个人网盘
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://www.github.com/agmgh" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              订单下载服务自动化设计
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-12-18
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+                <a href="https://dotnettalk.top/tag/uSZlUZKkX/" class="post-tag">
+                  # 电商系统开发
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <h3 id="电商管理综合平台订单下载服务">电商管理综合平台订单下载服务</h3>
+<p>我们开发的电商管理综合平台，分为电商ERP客户端和后台订单下载服务两个部分，其中订单下载服务是将一个自动化的服务，统一下载各平台的订单到电商业务库，交由电商ERP客户端处理。</p>
+<h3 id="哪些任务可以设置为自动任务">哪些任务可以设置为自动任务</h3>
+<p>目前，后台订单下载服务除了负责下载各平台的订单外，还可以执行批量自动发货和退款订单实时标记等一系列自动化任务。如果本地仓库的库存需要同步至线上库存，也是可以建立一个同步库存服务的，这样的话，运营人员或者客服就不会担心因为库存问题，导致商品被下架了。</p>
+<h3 id="订单下载自动化服务">订单下载自动化服务</h3>
+<ol>
+<li>按平台的不同，分别编写下载类；</li>
+<li>每个下载类里，包含多个公共方法，供自动化任务类调用；公共方法包括下载订单、自动发货、退款标记等等；</li>
+<li>自动化任务类将定时运行下载类里的公共方法，完成各项任务。<br>
+<img src="https://dotnettalk.top/post-images/1582268194762.png" alt="下载服务类" loading="lazy"></li>
+</ol>
+<h3 id="自动化任务类关键代码">自动化任务类关键代码</h3>
+<pre><code class="language-csharp">public static void ThreadFunc() 
+{
+	///	&lt;summary&gt;
+	///	对象初始化
+	///	&lt;/summary&gt;
+	//	标记服务开始	*/
+	bStarted = true;
+	/*	系统服务心跳，单位：秒	*/
+	double setHeart = 1;
+	/*	任务调用默认间隔，单位：分钟	*/
+	int setTaskTimeDefault = 30;
+	int setTaskTime;
+	///	&lt;summary&gt;
+	/// 获取本地配置信息,ini文件读取
+	/// &lt;/summary&gt; 
+	string TaskRunTime = ConfigurationManager.AppSettings[&quot;DownOrderTime&quot;].Trim();
+	try 
+	{
+		int nTaskRunTime = int.Parse(TaskRunTime);
+		// 判断读取的任务运行间隔时间是否大于一天或者小于1
+		if (nTaskRunTime &lt; 1 || nTaskRunTime &gt; 1440)
+		                    setTaskTime = setTaskTimeDefault; else
+		                    setTaskTime = nTaskRunTime;
+	}
+	catch 
+	{
+		// 异常情况使用默认值
+		setTaskTime = setTaskTimeDefault;
+	}
+	DateTime dtLast = System.DateTime.Now;
+	DateTime dtNow = System.DateTime.Now;
+	TimeSpan ts;
+	bool bFistRun = true;
+	bool bTaskTime = false;
+	/// &lt;summary&gt;
+	/// 主循环
+	/// &lt;/summary&gt;
+	while (true) 
+	{
+		/*	检查是否终止服务	*/
+		if (bSetStop)
+		                    break;
+		/*	心跳	*/
+		System.Threading.Thread.Sleep((int)(setHeart * 1000));
+		/*	检测所有模块列表，确认是否有定时任务需要下发	*/
+		dtNow = System.DateTime.Now;
+		ts = dtNow - dtLast;
+		bTaskTime = (ts.Minutes &gt;= setTaskTime) ? true : false;
+		if (bFistRun || bTaskTime) 
+		{
+			dtLast = dtNow;
+			bFistRun = false;
+			objTask.TaskRunDownOrder();
+			//执行订单下载任务
+		}
+	}
+	// 结束服务
+	bStarted = false;
+}
+</code></pre>
+<figure data-type="image" tabindex="1"><img src="https://dotnettalk.top/post-images/1582782296431.png" alt="关注公众号" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E7%94%B5%E5%95%86%E7%AE%A1%E7%90%86%E7%BB%BC%E5%90%88%E5%B9%B3%E5%8F%B0%E8%AE%A2%E5%8D%95%E4%B8%8B%E8%BD%BD%E6%9C%8D%E5%8A%A1">电商管理综合平台订单下载服务</a></li>
+<li><a href="#%E5%93%AA%E4%BA%9B%E4%BB%BB%E5%8A%A1%E5%8F%AF%E4%BB%A5%E8%AE%BE%E7%BD%AE%E4%B8%BA%E8%87%AA%E5%8A%A8%E4%BB%BB%E5%8A%A1">哪些任务可以设置为自动任务</a></li>
+<li><a href="#%E8%AE%A2%E5%8D%95%E4%B8%8B%E8%BD%BD%E8%87%AA%E5%8A%A8%E5%8C%96%E6%9C%8D%E5%8A%A1">订单下载自动化服务</a></li>
+<li><a href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E4%BB%BB%E5%8A%A1%E7%B1%BB%E5%85%B3%E9%94%AE%E4%BB%A3%E7%A0%81">自动化任务类关键代码</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://dotnettalk.top/post/System-architecture-design/">
+              <h3 class="post-title">
+                系统架构设计
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34188102000330" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="https://dotnettalk.top/images/ba.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 10px; color:#939393;">皖公网安备 34188102000330号</p></a>
+  <a class="rss" href="https://dotnettalk.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

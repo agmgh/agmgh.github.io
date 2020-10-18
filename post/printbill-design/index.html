@@ -1,0 +1,243 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>快递单打印设计 | DotnetTalk</title>
+<link rel="shortcut icon" href="https://dotnettalk.top/favicon.ico?v=1602987756979">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://dotnettalk.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="快递单打印设计 | DotnetTalk - Atom Feed" href="https://dotnettalk.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="在电商管理综合平台开发中，快递单打印功能是比较重要和复杂的功能之一。之前，我们大部分快递公司采用的是纸质面单，在软件开发设计中，也是比较简单的。只要按每家快递公司设计好打印模板，就可以打印快递单了。这几年，随着电子商务的繁荣发展，纸质面单由..." />
+    <meta name="keywords" content="电商系统开发" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://dotnettalk.top">
+  <img class="avatar" src="https://dotnettalk.top/images/avatar.png?v=1602987756979" alt="">
+  </a>
+  <h1 class="site-title">
+    DotnetTalk
+  </h1>
+  <p class="site-description">
+    Done is Better Than Perfact
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="https://curl.qcloud.com/sKNXUAKJ" class="menu" target="_blank">
+          11.11云上盛惠
+        </a>
+      
+    
+      
+        <a href="http://dotnettalk.ys168.com/" class="menu" target="_blank">
+          个人网盘
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://www.github.com/agmgh" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              快递单打印设计
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-01-04
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://dotnettalk.top/tag/uSZlUZKkX/" class="post-tag">
+                  # 电商系统开发
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>在电商管理综合平台开发中，快递单打印功能是比较重要和复杂的功能之一。之前，我们大部分快递公司采用的是纸质面单，在软件开发设计中，也是比较简单的。只要按每家快递公司设计好打印模板，就可以打印快递单了。这几年，随着电子商务的繁荣发展，纸质面单由于成本高，信息维护不方便，已逐步被快递公司推出的经济实用的电子面单所代替。电子面单最大的好处，实现了客户订单数据的有效传递，快递公司运营效率显著提升。</p>
+<!-- more -->
+<h3 id="快递打印模块设计">快递打印模块设计</h3>
+<ol>
+<li>根据店铺自身情况，选择合适的快递接口API对接方案；</li>
+<li>选择自己熟悉的报表打印控件，特别是对套打支持比较好的控件；</li>
+<li>设计符合自身情况的打印流程</li>
+</ol>
+<h3 id="快递接口api接口方案">快递接口API接口方案</h3>
+<ol>
+<li>调用快递公司提供的API接口，来获取物流单号、推送订单信息。【我们采取的方案】</li>
+<li>对接菜鸟的电子面单接口，店铺签约物流公司，可完成对接几乎全部的主流快递公司；</li>
+<li>调用第三方物流接口服务商提供的接口，来完成电子面单对接工作。</li>
+</ol>
+<h3 id="报表打印控件">报表打印控件</h3>
+<p>我们的电商综合管理平台，是WinForm客户端程序，所以，目前有很多报表控件可供选择，但是免费可以使用的并不多。我们目前在使用的锐浪报表控件，也并不是完全免费的报表控件，但是，这款报表控件是允许企业在其内部开发的软件上使用的。<br>
+我最早使用锐浪报表的时候，可能是在10年前，那个时候，当时的我才刚刚入行，可视化的报表设计器，强大的报表设计工具，也给我留下了深刻的印象。记得06年时候，锐浪报表的版本是4.0，是完成免费的。当我们2014年设计电商综合管理平台时，当我再次访问锐浪网站时，版本已经升级到了5.8。同时，他们也有支持B/S架构的Web报表设计器。这个时候，如果在商业软件里需要用到锐浪报表控件，是需要正版授权的。很高兴，我们在官方网站中找到关于免费使用 Grid++Report试用与免费说明中，找到如下说明：</p>
+<blockquote>
+<p>任何开发者都可以免费使用 Grid++Report。在广&gt;大的 Grid++Report 用户中，免费用户占据了绝&gt;大多数。我们认为以下情况更适合免费使用：</p>
+<ol>
+<li>学习报表开发。</li>
+<li>大学生毕业设计。</li>
+<li>开发企事业单位内部使用的软件系统。**</li>
+<li>开发免费软件。</li>
+<li>尚未实现收益的商业软件与共享软件。</li>
+</ol>
+</blockquote>
+<p>再次，感谢锐浪报表Grid++report，给我们带来功能强大的报表工具。</p>
+<h3 id="打印流程设计">打印流程设计</h3>
+<h4 id="前置打印">前置打印</h4>
+<p>前置打印，是在订单下载审核完成后，立即将快递单和发货单同时打印，接着是捡货、验货、扫描、称重、发货。前置打印的好处，在于，发货单和快递单，在包裹打包时，同时贴上快递单，不易出错。缺点是，遇到大型活动时，可能会造成电子面单的浪费现象。</p>
+<h4 id="后置打印">后置打印</h4>
+<p>后置打印，是在包裹最后称重完成后，执行快递单打印操作。快递单无须再与发货单相匹配，节省了时间成本，同时有效的避免拣货过程中快递单的丢失。</p>
+<h4 id="批量打印">批量打印</h4>
+<p>在做特定商品活动时，可以设置将购买某个商品，固定数量的订单，打上标记，这样，在审单完成后，将进入批量打印环节，大大提高订单打印处理效率。</p>
+<h3 id="写在最后">写在最后</h3>
+<p>本期分享的是我们在开发电商综合管理平台的快递单打印，当然，此次没有分享过多的技术实现细节，主要是分享了我们在设计快递单打印时的思路和方案，希望能给需要的朋友一些启发和帮助。<br>
+<img src="https://dotnettalk.top/post-images/1582782296431.png" alt="关注公众号" loading="lazy"></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E5%BF%AB%E9%80%92%E6%89%93%E5%8D%B0%E6%A8%A1%E5%9D%97%E8%AE%BE%E8%AE%A1">快递打印模块设计</a></li>
+<li><a href="#%E5%BF%AB%E9%80%92%E6%8E%A5%E5%8F%A3api%E6%8E%A5%E5%8F%A3%E6%96%B9%E6%A1%88">快递接口API接口方案</a></li>
+<li><a href="#%E6%8A%A5%E8%A1%A8%E6%89%93%E5%8D%B0%E6%8E%A7%E4%BB%B6">报表打印控件</a></li>
+<li><a href="#%E6%89%93%E5%8D%B0%E6%B5%81%E7%A8%8B%E8%AE%BE%E8%AE%A1">打印流程设计</a>
+<ul>
+<li><a href="#%E5%89%8D%E7%BD%AE%E6%89%93%E5%8D%B0">前置打印</a></li>
+<li><a href="#%E5%90%8E%E7%BD%AE%E6%89%93%E5%8D%B0">后置打印</a></li>
+<li><a href="#%E6%89%B9%E9%87%8F%E6%89%93%E5%8D%B0">批量打印</a></li>
+</ul>
+</li>
+<li><a href="#%E5%86%99%E5%9C%A8%E6%9C%80%E5%90%8E">写在最后</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://dotnettalk.top/post/SerialPort-weigh/">
+              <h3 class="post-title">
+                .Net调用SerialPort类搞定电商包裹称重
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34188102000330" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="https://dotnettalk.top/images/ba.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 10px; color:#939393;">皖公网安备 34188102000330号</p></a>
+  <a class="rss" href="https://dotnettalk.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

@@ -1,0 +1,249 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>C#中TransactionScope的使用方法和原理(转) | DotnetTalk</title>
+<link rel="shortcut icon" href="https://dotnettalk.top/favicon.ico?v=1602987756979">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://dotnettalk.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="C#中TransactionScope的使用方法和原理(转) | DotnetTalk - Atom Feed" href="https://dotnettalk.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="在.net 1.1的时代，还没有TransactionScope类，因此很多关于事务的处理，都交给了SqlTransaction和SqlConnection，每个Transaction是基于每个Connection的。这种设计对于跨越多个程..." />
+    <meta name="keywords" content="技术分享" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://dotnettalk.top">
+  <img class="avatar" src="https://dotnettalk.top/images/avatar.png?v=1602987756979" alt="">
+  </a>
+  <h1 class="site-title">
+    DotnetTalk
+  </h1>
+  <p class="site-description">
+    Done is Better Than Perfact
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="https://curl.qcloud.com/sKNXUAKJ" class="menu" target="_blank">
+          11.11云上盛惠
+        </a>
+      
+    
+      
+        <a href="http://dotnettalk.ys168.com/" class="menu" target="_blank">
+          个人网盘
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://www.github.com/agmgh" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              C#中TransactionScope的使用方法和原理(转)
+            </h2>
+            <div class="post-info">
+              <span>
+                2020-01-06
+              </span>
+              <span>
+                4 min read
+              </span>
+              
+                <a href="https://dotnettalk.top/tag/technology-sharing/" class="post-tag">
+                  # 技术分享
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>在.net 1.1的时代，还没有TransactionScope类，因此很多关于事务的处理，都交给了SqlTransaction和SqlConnection，每个Transaction是基于每个Connection的。这种设计对于跨越多个程序集或者多个方法的事务行为来说，不是非常好，需要把事务和数据库连接作为参数传入。</p>
+<!-- more -->
+<p>在.net 2.0后，TransactionScope类的出现，大大的简化了事务的设计。示例代码如下：</p>
+<pre><code>static void Main(string[] args)
+{
+using (TransactionScope ts = new TransactionScope())
+{
+userBLL u = new userBLL();
+TeacherBLL t = new TeacherBLL();
+u.ADD();
+t.ADD();
+ts.Complete();
+}
+}
+</code></pre>
+<p>只需要把需要事务包裹的逻辑块写在using (TransactionScope ts = new TransactionScope())中就可以了。从这种写法可以看出，TransactionScope实现了IDispose接口。除非显示调用ts.Complete()方法。否则，系统不会自动提交这个事务。如果在代码运行退出这个block后，还未调用Complete()，那么事务自动回滚了。在这个事务块中，u.ADD()方法和t.ADD()方法内部都没有用到任何事务类。<br>
+TransactionScope是基于当前线程的，在当前线程中，调用Transaction.Current方法可以看到当前事务的信息。具体关于TransactionScope的使用方法，已经它的成员方法和属性，可以查看 MSDN 。<br>
+TransactionScope类是可以嵌套使用，如果要嵌套使用，需要在嵌套事务块中指定TransactionScopeOption参数。默认的这个参数为Required。<br>
+该参数的具体含义可以参考http://msdn.microsoft.com/zh-cn/library/system.transactions.transactionscopeoption(v=vs.80).aspx<br>
+比如下面代码：</p>
+<pre><code>static void Main(string[] args)
+{
+using (TransactionScope ts = new TransactionScope())
+{
+Console.WriteLine(Transaction.Current.TransactionInformation.LocalIdentifier);
+userBLL u = new userBLL();
+TeacherBLL t = new TeacherBLL();
+u.ADD();
+using (TransactionScope ts2 = new TransactionScope(TransactionScopeOption.Required))
+{
+Console.WriteLine(Transaction.Current.TransactionInformation.LocalIdentifier);
+t.ADD();
+ts2.Complete();
+}
+ts.Complete();
+}
+}
+</code></pre>
+<p>当嵌套类的TransactionScope的TransactionScopeOption为Required的时候，则可以看到如下结果，他们的事务的ID都是同一个。并且，只有当2个TransactionScope都complete的时候才能算真正成功。</p>
+<p>如果把TransactionScopeOption设为RequiresNew，则嵌套的事务块和外层的事务块各自独立，互不影响。</p>
+<pre><code>static void Main(string[] args)
+{
+using (TransactionScope ts = new TransactionScope())
+{
+Console.WriteLine(Transaction.Current.TransactionInformation.LocalIdentifier);
+userBLL u = new userBLL();
+TeacherBLL t = new TeacherBLL();
+u.ADD();
+using (TransactionScope ts2 = new TransactionScope(TransactionScopeOption.RequiresNew))
+{
+Console.WriteLine(Transaction.Current.TransactionInformation.LocalIdentifier);
+t.ADD();
+ts2.Complete();
+}
+ts.Complete();
+}
+}
+</code></pre>
+<p>可以看到，他们的事务id是不一样的。<br>
+TransactionScopeOption设为Suppress则为取消当前区块的事务，一般很少使用。<br>
+对于多个不同服务器之间的数据库操作，TransactionScope依赖DTC（Distributed Transaction Coordinator）服务完成事务一致性。<br>
+但是对于单一服务器数据，TransactionScope的机制则比较复杂。主要用的的是线程静态特性。线程静态特性ThreadStaticAttribute让CLR知道，它标记的静态字段的存取是依赖当前线程，而独立于其他线程的。既然存储在线程静态字段中的数据只对存储该数据的同一线程中所运行的代码可见，那么，可使用此类字段将其他数据从一个方法传递到该第一个方法所调用的其他方法，而且完全不用担心其他线程会破坏它的工作。TransactionScope 会将当前的 Transaction 存储到线程静态字段中。当稍后实例化 SqlCommand 时（在此 TransactionScope 从线程局部存储中删除之前），该 SqlCommand 会检查线程静态字段以查找现有 Transaction，如果存在则列入该 Transaction 中。通过这种方式，TransactionScope 和 SqlCommand 能够协同工作，从而开发人员不必将 Transaction 显示传递给 SqlCommand 对象。实际上，TransactionScope 和 SqlCommand 所使用的机制非常复杂。具体可以参考文章 http://www.microsoft.com/china/MSDN/library/netFramework/netframework/NETMattersSep.mspx?mfr=true<br>
+Wrox出版的《Professional C# 4 and .NET 4》也有关于TransactionScope的一些使用方法的介绍。<br>
+原文地址： https://www.cnblogs.com/sdaulldd/p/6022319.html<br>
+<img src="https://dotnettalk.top/post-images/1582782296431.png" alt="关注公众号" loading="lazy"></p>
+
+              </div>
+              <div class="toc-container">
+                
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://dotnettalk.top/post/printbill-design/">
+              <h3 class="post-title">
+                快递单打印设计
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34188102000330" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="https://dotnettalk.top/images/ba.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 10px; color:#939393;">皖公网安备 34188102000330号</p></a>
+  <a class="rss" href="https://dotnettalk.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

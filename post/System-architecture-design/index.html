@@ -1,0 +1,228 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>系统架构设计 | DotnetTalk</title>
+<link rel="shortcut icon" href="https://dotnettalk.top/favicon.ico?v=1602987756979">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://dotnettalk.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="系统架构设计 | DotnetTalk - Atom Feed" href="https://dotnettalk.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="目前市场主流的电商管理ERP软件，如管易、网店管家，大部分采用的是C/S(客户机和服务器)结构，凡是订购软件服务的网店客户，只要通过客户端就能完成对主流电商平台进行统一管理。对于没有软件研发实力的店铺卖家来说，使用现成的电商管理软件，可以大..." />
+    <meta name="keywords" content="电商系统开发" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://dotnettalk.top">
+  <img class="avatar" src="https://dotnettalk.top/images/avatar.png?v=1602987756979" alt="">
+  </a>
+  <h1 class="site-title">
+    DotnetTalk
+  </h1>
+  <p class="site-description">
+    Done is Better Than Perfact
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="https://curl.qcloud.com/sKNXUAKJ" class="menu" target="_blank">
+          11.11云上盛惠
+        </a>
+      
+    
+      
+        <a href="http://dotnettalk.ys168.com/" class="menu" target="_blank">
+          个人网盘
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://www.github.com/agmgh" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              系统架构设计
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-12-13
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+                <a href="https://dotnettalk.top/tag/uSZlUZKkX/" class="post-tag">
+                  # 电商系统开发
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>目前市场主流的电商管理ERP软件，如管易、网店管家，大部分采用的是C/S(客户机和服务器)结构，凡是订购软件服务的网店客户，只要通过客户端就能完成对主流电商平台进行统一管理。对于没有软件研发实力的店铺卖家来说，使用现成的电商管理软件，可以大大节约成本，提高工作效率。但是，从数据安全角度来说，使用第三方软件，客户隐私信息被更多的暴露出来。这也是近期天猫要求所有第三方服务商完成数据存储加密升级的原因。</p>
+<!-- more -->
+<h3 id="改造前电商erp软件情况">改造前电商ERP软件情况</h3>
+<p>在开发自己的电商管理综合平台前，我们使用的是离职员工开发的一套电商业务管理软件，软件是采用delphi语言开发，系统结构也是采用C/S模式，</p>
+<p>系统分为后台订单下载服务和前台店铺订单管理两个部分。后台订单下载服务是部署在聚石塔内，负责处理天猫、C店、京东等平台订单。</p>
+<p>我们部署了瑞友天翼，实现在聚石塔内部署客户端程序，本地可远程访问客户程序，完成订单审核、订单查询等操作。老系统采用通过TCP端口读取远程服务器数据，完成订单打印、称重、扫描等操作。</p>
+<p>因为我们并没有这套软件的开发源码，即使有源码，也没有了解delphi语言，更谈不上在其上进行开发了。我们在后期又增加了部分外围的电商平台，如唯品会、当当网、拍拍网、工行融易购、建行等等。我们还是使用之前的这套软件，重新在公司局域网部署了一套系统，专门维护这几个外网平台的订单。</p>
+<p>这样，在系统改造前，我们是在维护两套一样的系统，客服同样也是同时使用两套系统，非常麻烦，影响工作效率。这也是我们要改造现有电商管理软件的主要原因。</p>
+<h3 id="重新设计电商管理综合平台">重新设计电商管理综合平台</h3>
+<ol>
+<li>系统采用新的开发语言—— C#；</li>
+<li>电商管理综合平台系统通讯架构采用.NET Remoting通过TCP端口从本地激活远程对象，访问远程数据；</li>
+<li>系统分为独立的订单下载服务和电商业务管理客户端组成；</li>
+</ol>
+<h3 id="电商业务管理客户端系统功能图">电商业务管理客户端系统功能图</h3>
+<figure data-type="image" tabindex="1"><img src="https://dotnettalk.top/post-images/1582268134200.png" alt="电商业务管理客户端 功能图" loading="lazy"></figure>
+<h3 id="系统架构图">系统架构图</h3>
+<figure data-type="image" tabindex="2"><img src="https://dotnettalk.top/post-images/1582268154556.png" alt="架构图" loading="lazy"></figure>
+<h3 id="系统架构说明">系统架构说明</h3>
+<ol>
+<li>系统平台：Windows Server+IIS+SQLSERVER</li>
+<li>开发语言：.net；</li>
+<li>服务器：VM+RDS；</li>
+<li>系统架构：采用C/S三层架构；</li>
+<li>客户端为自开发Windows应用程序，用于用户交互；</li>
+<li>VM内订单抓单服务将访问淘宝API或者RDS订单推送库，完成淘宝订单抓取至RDS商家业务库；</li>
+<li>应用层采用采用.NET Remoting通过TCP端口来与客户端交互，并进行业务逻辑处理。</li>
+</ol>
+<figure data-type="image" tabindex="3"><img src="https://dotnettalk.top/post-images/1582782296431.png" alt="关注公众号" loading="lazy"></figure>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E6%94%B9%E9%80%A0%E5%89%8D%E7%94%B5%E5%95%86erp%E8%BD%AF%E4%BB%B6%E6%83%85%E5%86%B5">改造前电商ERP软件情况</a></li>
+<li><a href="#%E9%87%8D%E6%96%B0%E8%AE%BE%E8%AE%A1%E7%94%B5%E5%95%86%E7%AE%A1%E7%90%86%E7%BB%BC%E5%90%88%E5%B9%B3%E5%8F%B0">重新设计电商管理综合平台</a></li>
+<li><a href="#%E7%94%B5%E5%95%86%E4%B8%9A%E5%8A%A1%E7%AE%A1%E7%90%86%E5%AE%A2%E6%88%B7%E7%AB%AF%E7%B3%BB%E7%BB%9F%E5%8A%9F%E8%83%BD%E5%9B%BE">电商业务管理客户端系统功能图</a></li>
+<li><a href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E5%9B%BE">系统架构图</a></li>
+<li><a href="#%E7%B3%BB%E7%BB%9F%E6%9E%B6%E6%9E%84%E8%AF%B4%E6%98%8E">系统架构说明</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://dotnettalk.top/post/Preliminary-preparation/">
+              <h3 class="post-title">
+                前期准备
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34188102000330" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="https://dotnettalk.top/images/ba.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 10px; color:#939393;">皖公网安备 34188102000330号</p></a>
+  <a class="rss" href="https://dotnettalk.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>

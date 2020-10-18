@@ -1,0 +1,265 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>API调用类编写 | DotnetTalk</title>
+<link rel="shortcut icon" href="https://dotnettalk.top/favicon.ico?v=1602987756979">
+<link href="https://cdn.jsdelivr.net/npm/remixicon@2.3.0/fonts/remixicon.css" rel="stylesheet">
+<link rel="stylesheet" href="https://dotnettalk.top/styles/main.css">
+<link rel="alternate" type="application/atom+xml" title="API调用类编写 | DotnetTalk - Atom Feed" href="https://dotnettalk.top/atom.xml">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Droid+Serif:400,700">
+
+
+
+    <meta name="description" content="目前，各大电商平台都有各自的开放平台，基本上都有开放的API来提供给开发者调用。基本上提供了目前主流开发语言的sdk。但是，也有一些电商平台，没有提供完善的SDK可以调用，这时，也只能通过他们提供的api来调用相应的接口，来实现我们需要的功..." />
+    <meta name="keywords" content="电商系统开发" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.10.0/katex.min.css">
+    <script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+  </head>
+  <body>
+    <div class="main">
+      <div class="main-content">
+        <div class="site-header">
+  <a href="https://dotnettalk.top">
+  <img class="avatar" src="https://dotnettalk.top/images/avatar.png?v=1602987756979" alt="">
+  </a>
+  <h1 class="site-title">
+    DotnetTalk
+  </h1>
+  <p class="site-description">
+    Done is Better Than Perfact
+  </p>
+  <div class="menu-container">
+    
+      
+        <a href="/" class="menu">
+          首页
+        </a>
+      
+    
+      
+        <a href="/archives" class="menu">
+          归档
+        </a>
+      
+    
+      
+        <a href="/tags" class="menu">
+          标签
+        </a>
+      
+    
+      
+        <a href="/post/about" class="menu">
+          关于
+        </a>
+      
+    
+      
+        <a href="https://curl.qcloud.com/sKNXUAKJ" class="menu" target="_blank">
+          11.11云上盛惠
+        </a>
+      
+    
+      
+        <a href="http://dotnettalk.ys168.com/" class="menu" target="_blank">
+          个人网盘
+        </a>
+      
+    
+  </div>
+  <div class="social-container">
+    
+      
+        <a href="https://www.github.com/agmgh" target="_blank">
+          <i class="ri-github-line"></i>
+        </a>
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  </div>
+</div>
+
+        <div class="post-detail">
+          <article class="post">
+            <h2 class="post-title">
+              API调用类编写
+            </h2>
+            <div class="post-info">
+              <span>
+                2019-12-22
+              </span>
+              <span>
+                3 min read
+              </span>
+              
+                <a href="https://dotnettalk.top/tag/uSZlUZKkX/" class="post-tag">
+                  # 电商系统开发
+                </a>
+              
+            </div>
+            
+            <div class="post-content-wrapper">
+              <div class="post-content">
+                <p>目前，各大电商平台都有各自的开放平台，基本上都有开放的API来提供给开发者调用。基本上提供了目前主流开发语言的sdk。但是，也有一些电商平台，没有提供完善的SDK可以调用，这时，也只能通过他们提供的api来调用相应的接口，来实现我们需要的功能了。</p>
+<!-- more -->
+<p>本文以调用唯品会API为例，整理分享如何正确调用API。</p>
+<h3 id="调用开放平台api">调用开放平台API</h3>
+<ol>
+<li>学习了解开发平台API接口；</li>
+<li>了解API接口调用形式；</li>
+<li>编写统一的接口调用类。</li>
+</ol>
+<h3 id="如何编写接口调用类">如何编写接口调用类</h3>
+<p>通过熟悉开发平台的接口，我们可以明确所调用接口的输入参数和输出参数。可以将接口调用的固定参数作为调用类的默认构造函数来处理。如接口配置地址、商户ID等参数。如下图：<br>
+<img src="https://dotnettalk.top/post-images/1582268313494.jpg" alt="默认构造函数" loading="lazy"></p>
+<p>从上面的构造函数里，可以看出，构造函数传入了apiname参数，就是定义的api名称，在调用不同API时，同步传入API名称即可。<br>
+下面是获取订单基本信息接口所需要的XML文件，我们使用下面的方法来处理：<br>
+<img src="https://dotnettalk.top/post-images/1582268333779.jpg" alt="获取订单基本信息的xml" loading="lazy"></p>
+<p>接下来，我们来定义一个公共方法来统一调用API接口，方法定义如下：<br>
+<img src="https://dotnettalk.top/post-images/1582268346964.jpg" alt="GetServerData" loading="lazy"></p>
+<p>核心调用类 HttpPost,将接口调用需要的数据Post提交到API服务地址，接口将返回数据给客户端，我们本地将会获取到订单的基本信息。</p>
+<pre><code class="language-csharp">CookieContainer cookie = new CookieContainer();
+private string HttpPost(string Url, string postDataStr)
+{
+string retString = &quot;&quot;;
+while (true)
+{
+Stream myResponseStream = null;
+StreamReader myStreamReader = null;
+try
+{
+byte[] byteArray = Encoding.UTF8.GetBytes(postDataStr);
+HttpWebRequest request = (HttpWebRequest)WebRequest.Create(Url);
+request.Method = &quot;POST&quot;;
+request.ContentType = &quot;application/x-www-form-urlencoded&quot;;
+request.ContentLength = Encoding.UTF8.GetByteCount(postDataStr);
+request.CookieContainer = cookie;
+request.Timeout = 6000000;
+request.KeepAlive = true;
+request.ServicePoint.ConnectionLimit = 1024;
+Stream myRequestStream = request.GetRequestStream();
+myRequestStream.Write(byteArray, 0, byteArray.Length);
+HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+if (response.StatusCode != httptatusCode.OK)
+{
+continue;
+}
+response.Cookies = cookie.GetCookies(response.ResponseUri);
+myResponseStream = response.GetResponseStream();
+myStreamReader = new StreamReader(myResponseStream, Encoding.GetEncoding(&quot;utf-8&quot;));
+retString = myStreamReader.ReadToEnd();
+break;
+}
+catch (WebException e)
+{
+e.StackTrace.ToString();
+System.Diagnostics.Trace.WriteLine(e.Message);
+WriteSysLog.Log(&quot;servererr&quot;, e.Message + &quot;&quot;);
+if (true)
+continue;
+}
+finally
+{
+myStreamReader.Close();
+myResponseStream.Close();
+}
+}
+return retString;
+}
+</code></pre>
+<p>这样的话，通过这个统一的接口调用类，我们就可以调用其他的api接口了，只要接口调用所需的数据参数准确无误，都会返回正确的结果的。<br>
+<img src="https://dotnettalk.top/post-images/1582782296431.png" alt="关注公众号" loading="lazy"></p>
+
+              </div>
+              <div class="toc-container">
+                <ul class="markdownIt-TOC">
+<li>
+<ul>
+<li>
+<ul>
+<li><a href="#%E8%B0%83%E7%94%A8%E5%BC%80%E6%94%BE%E5%B9%B3%E5%8F%B0api">调用开放平台API</a></li>
+<li><a href="#%E5%A6%82%E4%BD%95%E7%BC%96%E5%86%99%E6%8E%A5%E5%8F%A3%E8%B0%83%E7%94%A8%E7%B1%BB">如何编写接口调用类</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+              </div>
+            </div>
+          </article>
+        </div>
+
+        
+          <div class="next-post">
+            <div class="next">下一篇</div>
+            <a href="https://dotnettalk.top/post/order-download-services/">
+              <h3 class="post-title">
+                订单下载服务自动化设计
+              </h3>
+            </a>
+          </div>
+        
+
+        
+
+        <div class="site-footer">
+  <a target="_blank" href="http://www.beian.gov.cn/portal/registerSystemInfo?recordcode=34188102000330" style="display:inline-block;text-decoration:none;height:20px;line-height:20px;"><img src="https://dotnettalk.top/images/ba.png" style="float:left;"/><p style="float:left;height:20px;line-height:20px;margin: 0px 0px 0px 10px; color:#939393;">皖公网安备 34188102000330号</p></a>
+  <a class="rss" href="https://dotnettalk.top/atom.xml" target="_blank">
+    <i class="ri-rss-line"></i> RSS
+  </a>
+</div>
+
+      </div>
+    </div>
+
+    <script>
+      hljs.initHighlightingOnLoad()
+
+      let mainNavLinks = document.querySelectorAll(".markdownIt-TOC a");
+
+      // This should probably be throttled.
+      // Especially because it triggers during smooth scrolling.
+      // https://lodash.com/docs/4.17.10#throttle
+      // You could do like...
+      // window.addEventListener("scroll", () => {
+      //    _.throttle(doThatStuff, 100);
+      // });
+      // Only not doing it here to keep this Pen dependency-free.
+
+      window.addEventListener("scroll", event => {
+        let fromTop = window.scrollY;
+
+        mainNavLinks.forEach((link, index) => {
+          let section = document.getElementById(decodeURI(link.hash).substring(1));
+          let nextSection = null
+          if (mainNavLinks[index + 1]) {
+            nextSection = document.getElementById(decodeURI(mainNavLinks[index + 1].hash).substring(1));
+          }
+          if (section.offsetTop <= fromTop) {
+            if (nextSection) {
+              if (nextSection.offsetTop > fromTop) {
+                link.classList.add("current");
+              } else {
+                link.classList.remove("current");    
+              }
+            } else {
+              link.classList.add("current");
+            }
+          } else {
+            link.classList.remove("current");
+          }
+        });
+      });
+
+    </script>
+  </body>
+</html>
