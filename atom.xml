@@ -2,7 +2,7 @@
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://dotnettalk.top</id>
     <title>DotnetTalk</title>
-    <updated>2020-10-18T02:22:38.460Z</updated>
+    <updated>2020-11-26T00:46:35.750Z</updated>
     <generator>https://github.com/jpmonette/feed</generator>
     <link rel="alternate" href="https://dotnettalk.top"/>
     <link rel="self" href="https://dotnettalk.top/atom.xml"/>
@@ -10,6 +10,13 @@
     <logo>https://dotnettalk.top/images/avatar.png</logo>
     <icon>https://dotnettalk.top/favicon.ico</icon>
     <rights>All rights reserved 2020, DotnetTalk</rights>
+    <entry>
+        <title type="html"><![CDATA[[转]基于Spring Cloud的微服务开发平台]]></title>
+        <id>https://dotnettalk.top/post/Spring-Cloud-Platform/</id>
+        <link href="https://dotnettalk.top/post/Spring-Cloud-Platform/">
+        </link>
+        <updated>2020-11-26T00:25:07.000Z</updated>
+    </entry>
     <entry>
         <title type="html"><![CDATA[Gridea使用Coding Pages服务搭建静态博客详解]]></title>
         <id>https://dotnettalk.top/post/gridea-shi-yong-coding-pages-fu-wu-da-jian-jing-tai-bo-ke-xiang-jie/</id>
@@ -103,17 +110,6 @@
         <summary type="html"><![CDATA[<p>目前市场主流的电商管理ERP软件，如管易、网店管家，大部分采用的是C/S(客户机和服务器)结构，凡是订购软件服务的网店客户，只要通过客户端就能完成对主流电商平台进行统一管理。对于没有软件研发实力的店铺卖家来说，使用现成的电商管理软件，可以大大节约成本，提高工作效率。但是，从数据安全角度来说，使用第三方软件，客户隐私信息被更多的暴露出来。这也是近期天猫要求所有第三方服务商完成数据存储加密升级的原因。</p>
 ]]></summary>
         <content type="html"><![CDATA[<p>目前市场主流的电商管理ERP软件，如管易、网店管家，大部分采用的是C/S(客户机和服务器)结构，凡是订购软件服务的网店客户，只要通过客户端就能完成对主流电商平台进行统一管理。对于没有软件研发实力的店铺卖家来说，使用现成的电商管理软件，可以大大节约成本，提高工作效率。但是，从数据安全角度来说，使用第三方软件，客户隐私信息被更多的暴露出来。这也是近期天猫要求所有第三方服务商完成数据存储加密升级的原因。</p>
-]]></content>
-    </entry>
-    <entry>
-        <title type="html"><![CDATA[前期准备]]></title>
-        <id>https://dotnettalk.top/post/Preliminary-preparation/</id>
-        <link href="https://dotnettalk.top/post/Preliminary-preparation/">
-        </link>
-        <updated>2019-12-12T11:08:10.000Z</updated>
-        <summary type="html"><![CDATA[<p>对于有软件研发能力的商家，目前主流的电商平台的开放平台，均提供 API 接口供开发人员调用，可以方便的处理订单、自动发货、同步库存等操作。下面以入驻天猫聚石塔为列，介绍商家后台管理系统开发的前期准备工作。</p>
-]]></summary>
-        <content type="html"><![CDATA[<p>对于有软件研发能力的商家，目前主流的电商平台的开放平台，均提供 API 接口供开发人员调用，可以方便的处理订单、自动发货、同步库存等操作。下面以入驻天猫聚石塔为列，介绍商家后台管理系统开发的前期准备工作。</p>
 ]]></content>
     </entry>
 </feed>
